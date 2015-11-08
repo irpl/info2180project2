@@ -1,39 +1,39 @@
-var div;
+var puzzlePiece;
 var blink;
 var timer;
 var whiteSpaceY;
 var whiteSpaceX;
 
-window.onload = function ()
+window.onload = function()
 {
-    var puzzlearea = document.getElementById('puzzlearea');
+    var puzzleArea = document.getElementById('puzzlearea');
     
-    div = puzzlearea.getElementsByTagName('div');
+    puzzlePiece = puzzleArea.getElementsByTagName('div');
 
-    for (var i=0; i<div.length; i++)
+    for (var i=0; i<puzzlePiece.length; i++)
     {
-        //div[i].style.backgroundImage="url('background.jpg')";
-        div[i].className = 'puzzlepiece';
-        div[i].style.left = (i%4*100)+'px';
-        div[i].style.top = (parseInt(i/4)*100) + 'px';
-        div[i].style.backgroundPosition= '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
-        div[i].onmouseover = function() 
+        puzzlePiece[i].style.backgroundImage="url('background.jpg')";
+        puzzlePiece[i].className = 'puzzlepiece';
+        puzzlePiece[i].style.left = (i%4*100)+'px';
+        puzzlePiece[i].style.top = (parseInt(i/4)*100) + 'px';
+        puzzlePiece[i].style.backgroundPosition= '-' + puzzlePiece[i].style.left + ' ' + '-' + puzzlePiece[i].style.top;
+        puzzlePiece[i].onmouseover = function()
         {
-            if (checkCanMove(parseInt(this.innerHTML)))
+            if (canMove(parseInt(this.innerHTML)))
             {
                 this.style.border = "2px solid red";
                 this.style.color = "#006600";
             }
         };
-        div[i].onmouseout = function()
+        puzzlePiece[i].onmouseout = function()
         {
             this.style.border = "2px solid black";
             this.style.color = "#000000";
         };
 
-        div[i].onclick = function()
+        puzzlePiece[i].onclick = function()
         {
-            if (checkCanMove(parseInt(this.innerHTML)))
+            if (canMove(parseInt(this.innerHTML)))
             {
                 swap(this.innerHTML-1);
                 if (checkFinish())
@@ -93,28 +93,29 @@ window.onload = function ()
     };
 };
 
-function checkCanMove(pos)
+function canMove(position)
 {
-    if (calcLeft(whiteSpaceX, whiteSpaceY) == (pos-1))
+    if (calcLeft(whiteSpaceX, whiteSpaceY) == (position-1))
     {
         return true;
     }
 
-    if (calcDown(whiteSpaceX, whiteSpaceY) == (pos-1))
+    if (calcDown(whiteSpaceX, whiteSpaceY) == (position-1))
     {
         return true;
     }
 
-    if (calcUp(whiteSpaceX, whiteSpaceY) == (pos-1))
+    if (calcUp(whiteSpaceX, whiteSpaceY) == (position-1))
     {
         return true;
     }
 
-    if (calcRight(whiteSpaceX, whiteSpaceY) == (pos-1))
+    if (calcRight(whiteSpaceX, whiteSpaceY) == (position-1))
     {
         return true;
     }
 }
+
 function Blink()
 {
     blink --;
@@ -122,7 +123,7 @@ function Blink()
     {
         var body = document.getElementsByTagName('body');
         body[0].style.backgroundColor = "#FFFFFF";
-        alert('you win');
+        alert('You Win!');
         return;
     }
     if (blink % 2)
@@ -149,9 +150,9 @@ function youWin()
 function checkFinish()
 {
     var flag = true;
-    for (var i = 0; i < div.length; i++) {
-        var y = parseInt(div[i].style.top);
-        var x = parseInt(div[i].style.left);
+    for (var i = 0; i < puzzlePiece.length; i++) {
+        var y = parseInt(puzzlePiece[i].style.top);
+        var x = parseInt(puzzlePiece[i].style.left);
 
         if (x != (i%4*100) || y != parseInt(i/4)*100)
         {
@@ -169,9 +170,9 @@ function calcLeft(x, y)
 
     if (xx > 0)
     {
-        for (var i = 0; i < div.length; i++) 
+        for (var i = 0; i < puzzlePiece.length; i++) 
         {
-            if (parseInt(div[i].style.left) + 100 == xx && parseInt(div[i].style.top) == yy)
+            if (parseInt(puzzlePiece[i].style.left) + 100 == xx && parseInt(puzzlePiece[i].style.top) == yy)
             {
                 return i;
             } 
@@ -183,13 +184,14 @@ function calcLeft(x, y)
     }
 }
 
-function calcRight (x, y) {
+function calcRight(x, y)
+{
     var xx = parseInt(x);
     var yy = parseInt(y);
     if (xx < 300)
     {
-        for (var i =0; i<div.length; i++){
-            if (parseInt(div[i].style.left) - 100 == xx && parseInt(div[i].style.top) == yy) 
+        for (var i =0; i<puzzlePiece.length; i++){
+            if (parseInt(puzzlePiece[i].style.left) - 100 == xx && parseInt(puzzlePiece[i].style.top) == yy) 
             {
                 return i;
             }
@@ -201,14 +203,15 @@ function calcRight (x, y) {
     } 
 }
 
-function calcUp (x, y) {
+function calcUp(x, y)
+{
     var xx = parseInt(x);
     var yy = parseInt(y);
     if (yy > 0)
     {
-        for (var i=0; i<div.length; i++)
+        for (var i=0; i<puzzlePiece.length; i++)
         {
-            if (parseInt(div[i].style.top) + 100 == yy && parseInt(div[i].style.left) == xx) 
+            if (parseInt(puzzlePiece[i].style.top) + 100 == yy && parseInt(puzzlePiece[i].style.left) == xx) 
             {
                 return i;
             }
@@ -220,15 +223,15 @@ function calcUp (x, y) {
     }
 }
 
-function calcDown (x, y)
+function calcDown(x, y)
 {
     var xx = parseInt(x);
     var yy = parseInt(y);
     if (yy < 300)
     {
-        for (var i=0; i<div.length; i++)
+        for (var i=0; i<puzzlePiece.length; i++)
         {
-            if (parseInt(div[i].style.top) - 100 == yy && parseInt(div[i].style.left) == xx) 
+            if (parseInt(puzzlePiece[i].style.top) - 100 == yy && parseInt(puzzlePiece[i].style.left) == xx) 
             {
                 return i;
             }
@@ -240,12 +243,13 @@ function calcDown (x, y)
     } 
 }
 
-function swap (pos) {
-    var temp = div[pos].style.top;
-    div[pos].style.top = whiteSpaceY;
+function swap(where)
+{
+    var temp = puzzlePiece[where].style.top;
+    puzzlePiece[where].style.top = whiteSpaceY;
     whiteSpaceY = temp;
 
-    temp = div[pos].style.left;
-    div[pos].style.left = whiteSpaceX;
+    temp = puzzlePiece[where].style.left;
+    puzzlePiece[where].style.left = whiteSpaceX;
     whiteSpaceX = temp;
 }
